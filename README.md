@@ -31,7 +31,7 @@ This paper supersedes the previous version of M3-LRN.
 
 1. Clone
 
-    ```git clone https://github.com/choyingw/SynergyNet```
+    ```git clone https://github.com/chuanli11/SynergyNet```
 
     ```cd SynergyNet ```
 
