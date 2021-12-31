@@ -1,0 +1,5 @@
+venv/*
+*.pyc
+*.tar
+*img*
+3dmm_data/*

@@ -92,28 +92,28 @@ def main(args):
             vertices_lst.append(vertices)
             poses.append([angles, translation, lmks])
 
-        if not osp.exists(f'inference_output/rendering_overlay/'):
-            os.makedirs(f'inference_output/rendering_overlay/')
-        if not osp.exists(f'inference_output/landmarks/'):
-            os.makedirs(f'inference_output/landmarks/')
-        if not osp.exists(f'inference_output/poses/'):
-            os.makedirs(f'inference_output/poses/')
+        if not osp.exists(args.output_dir + f'/rendering_overlay/'):
+            os.makedirs(args.output_dir + f'/rendering_overlay/')
+        if not osp.exists(args.output_dir + f'/landmarks/'):
+            os.makedirs(args.output_dir + f'/landmarks/')
+        if not osp.exists(args.output_dir + f'/poses/'):
+            os.makedirs(args.output_dir + f'/poses/')
         
         name = img_fp.rsplit('/',1)[-1][:-4]
         img_ori_copy = img_ori.copy()
 
         # mesh
-        render(img_ori, vertices_lst, alpha=0.6, wfp=f'inference_output/rendering_overlay/{name}.jpg')
+        # render(img_ori, vertices_lst, alpha=0.6, wfp=args.output_dir + f'/rendering_overlay/{name}.jpg')
         
         # landmarks
-        draw_landmarks(img_ori_copy, pts_res, wfp=f'inference_output/landmarks/{name}.jpg')
+        draw_landmarks(img_ori_copy, pts_res, wfp= args.output_dir + f'/landmarks/{name}.jpg')
         
         # face orientation
         img_axis_plot = img_ori_copy
         for angles, translation, lmks in poses:
             img_axis_plot = draw_axis(img_axis_plot, angles[0], angles[1],
                 angles[2], translation[0], translation[1], size = 50, pts68=lmks)
-        wfp = f'inference_output/poses/{name}.jpg'
+        wfp = args.output_dir + f'/poses/{name}.jpg'
         cv2.imwrite(wfp, img_axis_plot)
         print(f'Save pose result to {wfp}')
 
@@ -124,6 +124,7 @@ if __name__ == '__main__':
     parser.add_argument("--png", action="store_true", help="if images are with .png extension")
     parser.add_argument('--img_size', default=120, type=int)
     parser.add_argument('-b', '--batch-size', default=1, type=int)
+    parser.add_argument('-o', '--output_dir', default='inference_output', type=str)
 
     args = parser.parse_args()
     main(args)
